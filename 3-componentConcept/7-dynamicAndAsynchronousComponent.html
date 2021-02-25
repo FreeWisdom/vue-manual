@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态组件和异步组件</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    currentItem: "checkbox-item"
+                }
+            },
+            methods: {
+                handleClick() {
+                    this.currentItem === "checkbox-item" ? this.currentItem = "text-item" : this.currentItem = "checkbox-item"
+                }
+            },
+            template: `
+            <!--
+                <checkbox-item v-show="currentItem === 'checkbox-item'"/>
+                <text-item v-show="currentItem === 'text-item'"/>
+            -->
+                <keep-alive>
+                    <component :is="currentItem"></component>
+                </keep-alive>
+                <button @click="handleClick">切换</button>
+                <async-item/>
+            `
+        });
+
+        app.component("checkbox-item", {
+            template: `<input type="checkbox"/>`
+        });
+
+        app.component("text-item", {
+            template: `<input type="text"/>`
+        });
+
+        app.component("async-item", Vue.defineAsyncComponent(() => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve({
+                        template: `4 second later！`
+                    })
+                }, 4000);
+            })
+        }))
+
+        app.mount("#root");
+    </script>
+</body>
+</html>

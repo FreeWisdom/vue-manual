@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件绑定</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: "hey",
+                    singleCheckBox: false,
+                    checkBoxes: ["红"],
+                    checkBoxValue: "假",
+                    radioData: "中",
+                    selectValue: "",
+                    selectValues: [],
+                    option: [{
+                        text: "a",
+                        value: "a"
+                    },{
+                        text: "b",
+                        value: "b"
+                    },{
+                        text: "c",
+                        value: "c"
+                    }],
+                    optionA: [],
+                    options: [{
+                        text: "a",
+                        value: {value: "a"}
+                    },{
+                        text: "b",
+                        value: {value: "b"}
+                    },{
+                        text: "c",
+                        value: {value: "c"}
+                    }],
+                    optionsA: [],
+                }
+            },
+            template: `
+                <div>
+                    {{message}}
+                    <input v-model="message"/>
+                    <textarea v-model="message"/>
+
+                    {{singleCheckBox}}
+                    <input type="checkbox" v-model="singleCheckBox"/>
+
+                    {{checkBoxes}}
+                    红<input type="checkbox" v-model="checkBoxes" value="红"/>
+                    黄<input type="checkbox" v-model="checkBoxes" value="黄"/>
+                    蓝<input type="checkbox" v-model="checkBoxes" value="蓝"/>
+                    绿<input type="checkbox" v-model="checkBoxes" value="绿"/>
+
+                    {{checkBoxValue}}
+                    <input type="checkbox" v-model="checkBoxValue" true-value="真" false-value="假"/>
+
+                    {{radioData}}
+                    大<input type="radio" v-model="radioData" value="大">
+                    中<input type="radio" v-model="radioData" value="中">
+                    小<input type="radio" v-model="radioData" value="小">
+                </div>
+                <div>
+                    {{selectValue}}
+                    <select v-model="selectValue">
+                        <option value="" disabled>请选择</option>
+                        <option value="a">a</option>
+                        <option value="b">b</option>
+                        <option value="c">c</option>
+                    </select>
+                </div>
+                <div>
+                    {{selectValues}}
+                    <select v-model="selectValues" multiple>
+                        <option value="a">a</option>
+                        <option value="b">b</option>
+                        <option value="c">c</option>
+                    </select>
+                </div>
+                <div>
+                    {{optionA}}
+                    <select v-model="optionA" multiple>
+                        <option v-for="item in option" :value="item.value">{{item.text}}</option>
+                    </select>
+                </div>
+                <div>
+                    {{optionsA}}
+                    <select v-model="optionsA" multiple>
+                        <option v-for="item in options" :value="item.value">{{item.text}}</option>
+                    </select>
+                </div>
+            `
+        });
+        
+        app.mount("#root");
+    </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>to do list 组件化</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    inputValue: "",
+                    contentList: []
+                }
+            },
+            methods: {
+                handleBtnClick() {
+                    this.contentList.push(this.inputValue);
+                    this.inputValue = "";
+                }
+            },
+            template: `
+                <div>
+                    <input v-model="inputValue"/>
+                    <button 
+                        v-on:click="handleBtnClick"
+                        v-bind:title="inputValue"
+                    >增加</button>
+                    <ul>
+                        <todo-item
+                            v-for="(item, index) of contentList"
+                            v-bind:content="item"
+                            v-bind:index="index"
+                        />
+                    </ul>   
+                </div>
+            `
+        });
+        
+        app.component("todo-item", {
+            props: ["content", "index"],
+            template: `
+                <li>
+                    <span>{{index}}</span>
+                    <span>:</span>
+                    <span>{{content}}</span>
+                </li>
+            `
+        });
+        
+        app.mount("#root");
+    </script>
+</body>
+</html>

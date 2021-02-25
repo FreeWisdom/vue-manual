@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>to do list</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    inputValue: "",
+                    contentList: []
+                }
+            },
+            methods: {
+                handleBtnClick() {
+                    this.contentList.push(this.inputValue);
+                    this.inputValue = "";
+                }
+            },
+            template: `
+                <div>
+                    <input v-model="inputValue"/>
+                    <button v-on:click="handleBtnClick">增加</button>
+                    <ul>
+                        <li v-for="(item, index) of contentList">{{index + 1}}：{{item}}</li>
+                    </ul>   
+                </div>
+            `
+        }).mount("#root")
+    </script>
+</body>
+</html>

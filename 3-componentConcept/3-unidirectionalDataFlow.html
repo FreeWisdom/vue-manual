@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单项数据流</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    num: 0,
+                }
+            },
+            template: `
+                <div>
+                    <counter :value="num" />
+                </div>
+            `
+        });
+
+        app.component("counter", {
+            props: ["value"],
+            data() {
+                return {
+                    myValue: this.value
+                }
+            },
+            methods: {
+                handleClick() {
+                    this.myValue += 1;
+                }
+            },
+            template: `
+                <div @click="handleClick">{{myValue}}</div>
+            `
+        });
+
+        app.mount("#root");
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表循环序渲染</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    listArray: ["小明", "男", "19岁" ],
+                    listObject: {
+                        name: "小明",
+                        gender: "男",
+                        age: "19岁"
+                    }
+                }
+            },
+            methods: {
+                handleClick() {
+                    this.listArray.push("凡尔赛人");
+                    this.listObject.job = "student";//注：新版本Vue3才支持改变对象后添加展示内容，旧版本Vue3之前这么展示有问题；
+                }
+            },
+            template: `
+                <div>
+                    <div v-for="(item, index) in listArray" :key="index">{{index}}：{{item}}</div>
+                    <template 
+                        v-for="(value, key, index) in listObject" 
+                        :key="index" 
+                    >
+                        <div v-if="key !== 'gender'">
+                            // v-for循环的优先级高于v-if判断的优先级，故不能在父级元素同时写v-for和v-if
+                            {{index}}-{{key}}：{{value}}
+                        </div>
+                    </template>
+                    <button @click="handleClick">哪里人？</button>
+                    <div v-for="item in 10">{{item}}</div>
+                </div>
+            `
+        });
+        const vm = app.mount("#root");
+    </script>
+</body>
+</html>

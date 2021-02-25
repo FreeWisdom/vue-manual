@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue中应用和组件的基本概念</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        //createApp 表示创建一个Vue应用，存储到app变量中
+        //传入的参数表示，这个应用最外层的组件应该如何展示
+        //mvvm 设计模式：m -> model 数据，v -> view 视图，vm -> viewModel 视图数据连接层； 
+        const app = Vue.createApp({
+            //数据
+            data() {
+                return {
+                    message: "hello word"
+                }
+            },
+
+            //视图
+            template: "<div>{{message}}</div>"
+        });
+        //vm代表的就是Vue应用的根组件，也是视图数据连接层
+        const vm = app.mount("#root");
+
+        //在根组件上，调用$data，可以操作数据
+        console.log(vm.$data.message)   //hello word
+    </script>
+</body>
+</html>

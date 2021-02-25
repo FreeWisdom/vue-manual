@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插槽的使用</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+    <!-- <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    text: "submit"
+                }
+            },
+            template: `
+                <my-form>
+                    <div>{{text}}</div>   
+                </my-form>
+                <my-form>
+                    <button>{{text}}</button>   
+                </my-form>
+                <my-form>
+                </my-form>
+            `
+        });
+
+        app.component("my-form", {
+            methods: {
+                handelClick() {
+                    console.log(99999)
+                }
+            },
+            template: `
+                <div>
+                    <input />
+                    <span @click="handelClick">
+                        <slot>此处可以设置默认值</slot>
+                    </span>
+                </div>
+            `
+        });
+
+        app.mount("#root");
+    </script> -->
+
+    <!-- <script>
+        // 具名插槽的使用
+        const app = Vue.createApp({
+            template: `
+                <layout>
+                    <template v-slot:header>head</template>
+                    <template #footer>footer</template>
+                </layout>
+            `
+        });
+
+        app.component("layout", {
+            template: `
+                <div>
+                    <slot name="header"></slot>
+                    <div>content</div>
+                    <slot name="footer"></slot>
+                </div>
+            `
+        });
+
+        app.mount("#root");
+    </script> -->
+    <script>
+        // 作用域插槽的使用
+        const app = Vue.createApp({
+            template: `
+                <!--
+                <list v-slot="slotProps">
+                     <div>{{slotProps.item}}</div>
+                </list>
+                -->
+                <list v-slot="{item}">
+                    <div>{{item}}</div>
+                </list>
+                
+            `
+        });
+
+        app.component("list", {
+            data() {
+                return {
+                    list: [1, 2, 3]
+                }
+            },
+            template: `
+                <div>
+                    <slot v-for="item in list" :item="item"></slot>
+                </div>
+            `
+        });
+
+        app.mount("#root");
+    </script>
+</body>
+</html>

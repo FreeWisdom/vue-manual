@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue模板</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+        <!-- <div>{{message}}</div> -->
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: "<h1>hello word</h1>"
+                }
+            },
+            methods: {
+                handleClick() {
+                    alert("click");
+                }
+            },
+            template: `
+                <div v-html='message'></div>
+                <div v-once='message'></div>
+                <form action="https://www.baidu.com" @click.prevent="handleClick">
+                    <button type="submit">提交</button>
+                </form>
+            `
+        });
+        const vm = app.mount("#root");
+    </script>
+</body>
+</html>

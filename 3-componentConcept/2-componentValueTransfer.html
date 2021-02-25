@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件传值</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    num: 2222,
+                    value1: () => {alert("456")},
+                    value2: "8888",
+                    value3: 9999999,
+                    // value4: 8888888
+                    value5: 8888
+                }
+            },
+            template: `
+                <div>
+                    <counter value="hey你好！" />
+                    <static v-bind:value="num" />
+                    <test :value1="value1" :value2="value2" :value5="value5"/>
+                </div>
+            `
+        });
+
+        app.component("counter", {
+            props: ["value"],
+            template: `
+                <div>{{value}}</div>
+            `
+        });
+
+        app.component("static", {
+            props: ["value"],
+            template: `
+                <div>{{typeof value}}:{{value}}</div>
+            `
+        });
+
+        app.component("test", {
+            props: {
+                value1: Function,
+                value2: String,
+                value3: {
+                    type: Number,
+                    required: true
+                },
+                value4: {
+                    type: Number,
+                    required: false,
+                    default: 6666666
+                },
+                value5: {
+                    type: Number,
+                    required: true,
+                    default: 666,
+                    validator: function(data) {
+                        return data < 777
+                    }
+                }
+            },
+            methods: {
+                handleClick() {
+                    console.log("123");
+                    this.value1();
+                }
+            },
+            template: `
+                <div @click="handleClick">{{typeof value1}}:{{value1}}</div>
+                <div>{{typeof value2}}:{{value2}}</div>
+                <div>{{typeof value3}}:{{value3}}</div>
+                <div>{{typeof value4}}:{{value4}}</div>
+                <div>{{typeof value5}}:{{value5}}</div>
+            `
+        });
+
+        app.mount("#root");
+    </script>
+</body>
+</html>

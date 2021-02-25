@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>条件渲染</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    show: false,
+                    conditionOne: false,
+                    conditionTwo: false,
+                }
+            },
+            template: `
+                <div v-if="show">hello word</div>
+                <div v-show="show">BB word</div>
+
+                <div v-if="conditionOne">if</div>
+                <div v-else-if="conditionTwo">else if</div>
+                <div v-else>else</div>
+            `
+        });
+        const vm = app.mount("#root");
+    </script>
+</body>
+</html>

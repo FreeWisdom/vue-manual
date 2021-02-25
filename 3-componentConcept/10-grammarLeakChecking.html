@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语法查漏</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+    <!-- <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    num: 2222,
+                }
+            },
+            template: `
+                <div>
+                    <static :num-value="num" />
+                </div>
+            `
+        });
+
+        app.component("static", {
+            props: ["num-value"],
+            template: `
+                <div>{{typeof num-value}}:{{num-value}}</div>
+                <div>{{typeof numValue}}:{{numValue}}</div>
+            `
+        });
+
+        app.mount("#root");
+    </script> -->
+    <!-- <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    count: 0,
+                }
+            },
+            template: `
+                <div @click="count += 1" v-once>
+                    {{count}}
+                </div>
+            `
+        });
+
+        const vm = app.mount("#root");
+    </script> -->
+
+    <!-- <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    count: 0,
+                }
+            },
+            mounted() {
+                this.$refs.count.innerHTML = "随后添加";
+                this.$refs.common.sayHello();
+            },
+            template: `
+                <div ref="count">
+                    {{count}}
+                </div>
+                <common-item ref="common"/>
+            `
+        });
+
+        app.component("common-item", {
+            methods: {
+                sayHello() {
+                    alert("hello")
+                }
+            },
+            template: `
+                <div>hello word</div>
+            `
+        })
+
+        const vm = app.mount("#root");
+    </script> -->
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    count: 0,
+                }
+            },
+            provide() {
+                return {
+                    count: 1
+                }
+            },
+            template: `
+                <div>
+                    <child :count="count"/>
+                    <button @click="count += 1">add</button>
+                </div>
+            `
+        });
+
+        app.component("child", {
+            template: `
+                <child-child />
+            `
+        })
+
+        app.component("child-child", {
+            inject:["count"],
+            template: `<div>{{count}}</div>`
+        })
+
+        const vm = app.mount("#root");
+    </script>
+</body>
+</html>

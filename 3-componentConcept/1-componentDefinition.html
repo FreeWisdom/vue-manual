@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件定义</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+    <script>
+        const ShowText = {
+            template: `<div>hello word</div>`
+        };
+
+        const AddCounter = {
+            data() {
+                return {
+                    count: 99
+                }
+            },
+            methods: {
+                handleClick() {
+                    this.count += 1;
+                }
+            },
+            template: `<div @click="handleClick">{{count}}</div>`
+        }
+
+        const app = Vue.createApp({
+            components: {
+                ShowText,
+                'add-counter':AddCounter
+            },
+            template: `
+                <div>
+                    <counterParent/>
+                    <counter/>
+                    <counter/>
+                    <add-counter/>
+                    <show-text/>
+                </div>
+            `
+        });
+        
+        app.component("counterParent", {
+            template: `<counter/>`
+        });
+
+        app.component("counter", {
+            data() {
+                return {
+                    count: 1
+                }
+            },
+            methods: {
+                handelClick() {
+                    this.count += 1;
+                }
+            },
+            template: `
+                <div @click="handelClick">{{count}}</div>
+            `
+        });
+
+        app.mount("#root");
+    </script>
+</body>
+</html>

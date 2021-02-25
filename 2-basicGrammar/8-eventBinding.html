@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件绑定</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    counter: 0,
+                    message: "",
+                    numberMessage: 123,
+                    spaceMessage: "hey"
+                }
+            },
+            methods: {
+                handleClick(num, event) {
+                    console.log(event.target, 0);
+                    this.counter += num;
+                },
+                handleClick1(num, event) {
+                    console.log("click1")
+                },
+                handleDivClick() {
+                    alert("div")
+                },
+                handelKeyDown() {
+                    console.log("keydown");
+                },
+                handelLeft() {
+                    console.log("left");
+                }
+            },
+            template: `
+                <!-- vue中事件修饰符：stop、prevent、self、once、capture、passive-->
+                <!-- vue中@click.self 修饰符，只点击本事件才触发-->
+                <!-- vue中@click.once 修饰符，事件仅触发一次-->
+                <!-- vue中传递参数与事件的方法-->
+                <!-- vue中点击绑定多个事件方法-->
+                <!-- vue中@click.stop 修饰符，阻止事件冒泡-->
+                <div @click.self.once="handleDivClick">
+                    {{counter}}
+                    <button @click.stop="handleClick(2, $event), handleClick1()">button</button>
+                </div>
+
+                <!-- vue中按键修饰符：enter、tab、delete、esc、up、down、left、right……-->
+                <div>
+                    <input @keydown.delete="handelKeyDown"/>
+                </div>
+
+                <!-- vue中鼠标修饰符：middle、left、right……-->
+                <div>
+                    <div @click.left="handelLeft">11111</div>
+                </div>
+
+                <!-- vue中精确修饰符：exact……-->
+                <div>
+                    <div @click.ctrl.exact="handelLeft">11111</div>
+                </div>
+                <div>
+                    {{message}}
+                    <input v-model.lazy="message"/>
+                </div>
+                <div>
+                    {{numberMessage}}
+                    {{typeof numberMessage}}
+                    <input v-model.number="numberMessage" type="number"/>
+                </div>
+                <div>
+                    {{spaceMessage}}
+                    <input v-model.trim="spaceMessage"/>
+                </div>
+            `
+        });
+        
+        app.mount("#root");
+    </script>
+</body>
+</html>

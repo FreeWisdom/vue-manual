@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>样式绑定语法</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        .red {
+            color: red;
+        }
+        .green {
+            color: green;
+        }
+        .yellow {
+            color: yellow;
+        }
+        .boldest {
+            font-weight: 900;
+        }
+        .bolder {
+            font-weight: 500;
+            font-size: x-large;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    //字符串控制样式
+                    classString: "green",
+                    //对象控制样式
+                    classObject: {
+                        red: true,
+                        boldest: true
+                    },
+                    //数组控制样式
+                    classArray: ["red", {"bolder": false}],
+                    styleString: "color: pink",
+                    styleObject: {
+                        color: "pink",
+                        fontSize: "60px",
+                    }
+                }
+            },
+            template: `
+                <div :class="classString">hello word</div>
+                <div :class="classObject">hello word</div>
+                <div :class="classArray">hello word</div>
+                <demo1 :class="classObject"/>
+                <demo2 :class="classObject"/>
+                <div style="color: pink">hello word</div>
+                <div :style="styleString">hello word</div>
+                <div :style="styleObject">hello word</div>
+            `
+        });
+
+        app.component("demo1", {
+            //若子组件中有2个或2个以上的并列 div ，父组件传递给子组件的样式需要用`:class="$attrs.class"`继承，其他 div 样式不受父组件影响；
+            template: `
+                <div :class="$attrs.class">子组件A</div>
+                <div >子组件B</div>
+            `
+        });
+
+        app.component("demo2", {
+            //若子组件中仅有一个 div ，子组件默认接受父组件样式的继承；
+            template: `
+                <div>子组件1</div>
+            `
+        });
+
+        const vm = app.mount("#root");
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据、方法、计算属性、监听器</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+        <!-- <div>{{message}}</div> -->
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: "hello word",
+                    count: 2,
+                    price: 100
+                }
+            },
+            watch: {
+                //data中的数据发生改变时，对应的函数就会执行
+                count(current, prev) {
+                    console.log(current, prev)
+                }
+            },
+            computed: {
+                //只有当计算属性中依赖的`数据属性值`发生改变时，才会重新执行计算；
+                total() {
+                    return this.count * this.price;
+                }
+            },
+            methods: {
+                //只要页面重新渲染，就会重新执行计算在内的所有方法；
+                handleClick() {
+                    alert("click");
+                },
+                formatString(string) {
+                    return string.toUpperCase();
+                },
+                getTotal() {
+                    return this.count * this.price;
+                }
+            },
+            template: `
+                <div @click="handleClick">{{message}}</div>
+                <div>{{formatString(message)}}</div>
+                <div>{{total}}</div>
+                <div>{{getTotal()}}</div>
+            `
+        });
+        const vm = app.mount("#root");
+    </script>
+</body>
+</html>
