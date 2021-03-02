@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>基础的 CSS 过渡与动画效果</title>
+        <script src="https://unpkg.com/vue@next"></script>
+        <style>
+            /* 动画 */
+            @keyframes leftToRight {
+                0% {
+                    transform: translate(-100px);
+                }
+                50% {
+                    transform: translate(-50px);
+                }
+                0% {
+                    transform: translate(0px);
+                }
+            }
+            .animation {
+                animation: leftToRight 3s;
+            }
+
+            /* 过度 */
+            .transition {
+                transition: 3s background-color ease;
+            }
+            .red {
+                background-color: red;
+            }
+            .yellow {
+                background-color: yellow;
+            }
+
+            .transition1 {
+                transition: 3s background-color ease;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root">
+        </div>
+        <script>
+            const app = Vue.createApp({
+                data() {
+                    return {
+                        animate: {
+                            transition: true,
+                            animation: true,
+                            red: true,
+                            yellow: false
+                        },
+                        animate1: {
+                            transition1: true,
+                        },
+                        styleObj: {
+                            background: "pink"
+                        }
+                    }
+                },
+                methods: {
+                    handleClick() {
+                        this.animate.animation = !this.animate.animation;
+                        this.animate.red = !this.animate.red;
+                        this.animate.yellow = !this.animate.yellow;
+                        this.styleObj.background === "pink" ? this.styleObj.background = "blue" : this.styleObj.background = "pink";
+                    }
+                },
+                template: `
+                    <div>
+                        <div :class="animate">hello word!</div>
+                        <div :class="animate1" :style="styleObj">hello word!</div>
+                        <button @click="handleClick">切换</button>
+                    </div>
+                `
+            });
+
+            app.mount("#root");
+        </script>
+    </body>
+</html>

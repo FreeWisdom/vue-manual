@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>transition标签的使用</title>
+        <script src="https://unpkg.com/vue@next"></script>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+        />
+        <style>
+            /* 过渡 */
+            .v-enter-from {
+                opacity: 0;
+            }
+            .enter, .leave {
+                transition: opacity 3s ease-in;
+            }
+            .v-enter-to {
+                opacity: 1;
+            }
+            /*可以省略 .v-leave-from {
+                opacity: 1;
+            } */
+            /*可以合并 .v-leave-active {
+                transition: opacity 3s ease-out;
+            } */
+            .v-leave-to {
+                opacity: 0;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="root">
+        </div>
+        <script>
+            const app = Vue.createApp({
+                data() {
+                    return {
+                        show: false
+                    }
+                },
+                methods: {
+                    handleClick() {
+                        this.show = !this.show;
+                    }
+                },
+                template: `
+                    <div>
+                        <transition
+                            enter-active-class="enter"
+                            leave-active-class="leave"
+                        >
+                            <div v-show="show">hello word!</div>
+                        </transition>
+                        <button @click="handleClick">切换</button>
+                    </div>
+                    <div>
+                        <transition
+                            enter-active-class="animate__animated animate__bounce"
+                            leave-active-class="animate__animated animate__flipInY"
+                        >
+                            <div v-show="show">hello word!</div>
+                        </transition>
+                        <button @click="handleClick">切换</button>
+                    </div>
+                `
+            });
+
+            app.mount("#root");
+        </script>
+    </body>
+</html>

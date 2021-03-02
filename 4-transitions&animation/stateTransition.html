@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>状态动画</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root">
+        </div>
+        <script>
+            const app = Vue.createApp({
+                data() {
+                    return {
+                        number: 1,
+                        animateNumber: 0
+                    }
+                },
+                methods: {
+                    handleClick() {
+                        this.number = 10;
+                        if(this.animateNumber < 10) {
+                            let animation = setInterval(() => {
+                                this.animateNumber += 1;
+                                if(this.animateNumber === 10) {
+                                    clearInterval(animation);
+                                }
+                            }, 1000)
+                        }   
+                    }
+                },
+                template: `
+                    <div>
+                        <div>{{animateNumber}}</div>
+                        <button @click="handleClick">增加</button>
+                    </div>
+                `
+            });
+
+            app.mount("#root");
+        </script>
+    </body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>transition标签的使用</title>
+        <script src="https://unpkg.com/vue@next"></script>
+        <style>
+            /* 过渡 */
+            .v-enter-from {
+                opacity: 0;
+            }
+            .v-enter-active, .v-leave-active {
+                transition: opacity 3s ease-in;
+            }
+            .v-enter-to {
+                opacity: 1;
+            }
+            /*可以省略 .v-leave-from {
+                opacity: 1;
+            } */
+            /*可以合并 .v-leave-active {
+                transition: opacity 3s ease-out;
+            } */
+            .v-leave-to {
+                opacity: 0;
+            }
+
+            /* 动画 */
+            @keyframes shake {
+                0% {
+                    transform: translateX(100px);
+                }
+                50% {
+                    transform: translateX(50px);
+                }
+                100% {
+                    transform: translateX(0px);
+                }
+            }
+            .seconde-enter-active {
+                animation: shake 3s;
+            }
+            .seconde-leave-active {
+                animation: shake 3s;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root">
+        </div>
+        <script>
+            const app = Vue.createApp({
+                data() {
+                    return {
+                        show: false
+                    }
+                },
+                methods: {
+                    handleClick() {
+                        this.show = !this.show;
+                    }
+                },
+                template: `
+                    <div>
+                        <transition>
+                            <div v-if="show">hello word!</div>
+                        </transition>
+                        <button @click="handleClick">切换</button>
+                    </div>
+                    <div>
+                        <transition name="seconde">
+                            <div v-if="show">hello word!</div>
+                        </transition>
+                        <button @click="handleClick">切换</button>
+                    </div>
+                `
+            });
+
+            app.mount("#root");
+        </script>
+    </body>
+</html>
