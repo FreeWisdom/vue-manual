@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>mixin混入基础语法</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <!-- <script>
+            const myMixin = {
+                data() {
+                    return {
+                        num: 999,
+                        count: 666
+                    }
+                },
+                created() {
+                    console.log("mixin created")
+                },
+                methods: {
+                    handleClick() {
+                        console.log("mixin handleClick")
+                    }
+                },
+            };
+
+            const app = Vue.createApp({
+                data() {
+                    return {
+                        // num: 2,
+                    }
+                },
+                created() {
+                    console.log("created")
+                },
+                mixins: [myMixin],
+                methods: {
+                    // handleClick() {
+                    //     console.log("handleClick")
+                    // }
+                },
+                template: `
+                    <div>
+                        <div>{{num}}</div>
+                        <div>{{count}}</div>
+                        <button @click="handleClick">切换</button>    
+                    </div>
+                `
+            })
+
+            app.mount("#root")
+        </script> -->
+        <script>
+            const app = Vue.createApp({
+                //myOption 不存在于Vue定义的任何属性中，为自定义属性
+                myOption: 'hello!',
+                template: `<div>{{this.$options.myOption}}</div>`
+            })
+
+            app.mixin({
+                myOption: 'bye!',
+                created: function () {
+                    //this.$options.myOption 调用自定义属性
+                    var myOption = this.$options.myOption
+                    if (myOption) {
+                        console.log(myOption)
+                    }
+                }
+            })
+
+            app.config.optionMergeStrategies.myOption = (mixinValue, appValue) => {
+                return mixinValue || appValue;
+            }
+
+            app.mount("#root")
+        </script>
+    </body>
+</html>

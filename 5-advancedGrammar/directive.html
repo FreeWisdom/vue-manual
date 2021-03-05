@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>vue 实现自定义指令</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <!-- <script>
+            //局部自定义指令
+            const directives = {
+                focus2: {
+                    mounted(el) {
+                        el.focus()
+                    }
+                }
+            }
+
+            const app = Vue.createApp ({
+                //组件中注册局部自定义指令
+                directives: directives,
+                template: `
+                    <div>
+                        <input v-focus2/>
+                    </div>
+                `
+            })
+
+            // 全局自定义指令定义
+            // app.directive("focus1", {
+            //     mounted(el) {
+            //         el.focus();
+            //     }
+            // })
+
+            app.mount("#root");
+        </script> -->
+        <!-- <script>
+            const app = Vue.createApp({
+                data() {
+                    return {
+                        top: 100
+                    }
+                },
+                template: `
+                    <div>
+                        <div v-position:a.b.c="top" class="header">
+                            <input />
+                        </div>
+                    </div>
+                `
+           });
+
+           app.directive("position", (el, binding) => {
+               console.log(binding)
+               el.style.position= "absolute";
+               el.style.top = (binding.value + "px");
+           });
+
+        //    app.directive("position", {
+        //        mounted(el, binding){
+        //            el.style.position = "absolute";
+        //            el.style.top = (binding.value + "px");
+        //        },
+        //        updated(el, binding){
+        //            el.style.position = "absolute";
+        //            el.style.top = (binding.value + "px");
+        //        }
+        //    })
+
+           const vm = app.mount("#root");
+        </script> -->
+        <script>
+            const app = Vue.createApp({
+                data() {
+                    return {
+                        distance: 100
+                    }
+                },
+                template: `
+                    <div>
+                        <div v-position:right="distance" class="header">
+                            <input />
+                        </div>
+                    </div>
+                `
+           });
+
+           app.directive("position", (el, binding) => {
+               console.log(binding);
+               el.style.position= "absolute";
+               el.style[binding.arg] = binding.value + "px";
+           });
+
+           const vm = app.mount("#root");
+        </script>
+    </body>
+</html>

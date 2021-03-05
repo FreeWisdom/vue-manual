@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>teleport 传送门</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue@next"></script>
+        <style>
+            .area {
+                position: absolute;
+                background-color: pink;
+                height: 300px;
+                width: 300px;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .mask {
+                background-color: blue;
+                opacity: 30%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                color: crimson;
+                font-size: 200px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script>
+            const app = Vue.createApp({
+                data() {
+                    return {
+                        distance: 100,
+                        show: false,
+                        message: "我在这"
+                    }
+                },
+                methods: {
+                    handleClick() {
+                        this.show = !this.show;
+                    }
+                },
+                template: `
+                        <div class="area">
+                            <button @click="handleClick">蒙住</button>
+                            <teleport to="body">
+                                <div v-show="show" class="mask">{{message}}</div>
+                            </teleport>
+                        </div>
+                `
+           });
+
+           const vm = app.mount("#root");
+        </script>
+    </body>
+</html>

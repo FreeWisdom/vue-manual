@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>渲染函数</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <!-- <script>
+            const app = Vue.createApp({
+                template: `
+                    <my-title :level="5">
+                        hello
+                    </my-title>
+                `
+           });
+
+           app.component("my-title", {
+               props:["level"],
+               template: `
+                    <h1 v-if="level === 1"><slot/></h1>
+                    <h2 v-if="level === 2"><slot/></h2>
+                    <h3 v-if="level === 3"><slot/></h3>
+                    <h4 v-if="level === 4"><slot/></h4>
+                    <h5 v-if="level === 5"><slot/></h5>
+               `
+           })
+
+           const vm = app.mount("#root");
+        </script> -->
+        <script>
+            const app = Vue.createApp({
+                template: `
+                    <my-title :level="2">
+                        hello
+                    </my-title>
+                `
+           });
+
+           app.component("my-title", {
+               props:["level"],
+               render() {
+                   const { h } = Vue;
+                //    return h("h"+ this.level, {}, this.$slots.default())
+                    return h("h"+ this.level, {}, [
+                        this.$slots.default(),
+                        h("h5", {}, "子元素")
+                    ])
+               }
+           })
+
+           const vm = app.mount("#root");
+        </script>
+    </body>
+</html>

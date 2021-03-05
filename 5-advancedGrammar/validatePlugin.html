@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>数据校验插件</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script>
+            const validatorPlugin = {
+                install(app, options) {
+                    app.mixin({
+                        mounted(){
+                            //this.$options可以选择出app上定义的一切
+                            let rules = this.$options.rules;
+
+                            for (const key in rules) {
+                                const item = rules[key];
+
+                                this.$watch(key, (newVal, oldVal) => {
+                                    const result = item.validate(newVal);
+                                    if(!result) console.log(item.message);
+                                })
+                            }
+
+                        }
+                    })
+                }
+            };
+
+            const app = Vue.createApp({
+                data() {
+                    return {
+                        name: "zhz",
+                        age: 22
+                    }
+                },
+                rules: {
+                    age: {
+                        validate: age => age > 18,
+                        message: "年轻人，太简单！"
+                    },
+                    name: {
+                        validate: name => name.length < 4,
+                        message: "老滑头，ID太长！"
+                    }
+                },
+                template: `
+                    <div>
+                        name:{{name}}; age:{{age}};
+                    </div>
+                `
+           });
+
+           app.use(validatorPlugin);
+           
+           const vm = app.mount("#root");
+        </script>
+    </body>
+</html>

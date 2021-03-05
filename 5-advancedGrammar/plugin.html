@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>插件的使用和定义</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script>
+            const myPlugin = {
+                install(app, options) {
+                    // 拓展依赖注入
+                    app.provide("name", options.name);
+                    
+                    //拓展指令
+                    app.directive("focus", {
+                        mounted(el) {
+                            el.focus()
+                        }
+                    });
+
+                    //拓展mixin
+                    app.mixin({
+                         mounted() {
+                             //打印了两次，因为是app调用的，故app下的每一个组件调用都执行一次，共两个组件，故打印了两次；
+                             console.log("mixin!");
+                         }
+                    });
+
+                    //针对Vue底层做全局的属性做拓展；
+                    app.config.globalProperties.$myMethod = "hey!!!";
+
+                }
+            };
+
+            const app = Vue.createApp({
+                template: `
+                    <my-title>
+                    </my-title>
+                `
+           });
+
+           app.component("my-title", {
+               inject: ["name"],
+               mounted() {
+                    console.log(this.$myMethod);
+               },
+               template: `<div>hello {{name}}<input v-focus /></div>`
+           })
+
+           app.use(myPlugin, { name: "zhz" })
+           const vm = app.mount("#root");
+        </script>
+    </body>
+</html>
