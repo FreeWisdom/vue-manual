@@ -1,4 +1,5 @@
 # for Mac OS X System Files
 .DS_Store
+.vscode
 Thumbs.db
 **/node_modules
