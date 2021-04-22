@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>ref，reactive 响应式引用的用法和原理</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script>
+            const app = Vue.createApp({
+                template: `
+                    <!--<div>{{name}}</div> 中，Vue底层会自动调用name.value-->
+                    <div>{{name}}：{{ageObj.age}} - {{onlyRead.day}} - {{gender}} - {{like}}</div>
+                `,
+                setup(props, context) {
+                    const { ref, reactive, readonly, toRefs } = Vue;
+
+                    let name = ref("zhz");
+                    let ageObj = reactive({age: 22});
+                    let birth = reactive({day: 6666});
+                    let onlyRead = readonly(birth);
+                    let infoOobject = reactive({gender: "男", like: "女"});
+                    setTimeout(() => {
+                        name.value = "zhe";
+                        ageObj.age = 99;
+                        onlyRead.day = "change";
+                    }, 2000);
+
+                    const {gender, like} = toRefs(infoOobject);
+                    return { name, ageObj, onlyRead, gender, like };
+                }
+           });
+           
+           const vm = app.mount("#root");
+        </script>
+    </body>
+</html>

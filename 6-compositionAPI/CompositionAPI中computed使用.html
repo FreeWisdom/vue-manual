@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>CompositionAPI中computed属性用法</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script>
+            // count相关的抽离；
+            const countReactive = () => {
+                const { ref } = Vue;
+                const count = ref(99);
+                const handleclick = () => {
+                    console.log(count.value);
+                    count.value += 1;
+                };
+                return { count, handleclick }
+            };
+
+            // 计算属性一般操作；
+            const countAddFiveReactive = (count) => {
+                const { reactive, computed } = Vue;
+                // const template = reactive("");
+                const countAddFive = computed(() => {
+                    console.log(count.value)
+                    return count.value + 5;
+                });
+                return { countAddFive };
+            };
+
+            // 计算属性复杂操作get/set；
+            const countAddTenReactive = (count) => {
+                const { computed } = Vue;
+                const countAddTen = computed({
+                    get: () => {
+                        return count.value + 10
+                    },
+                    set: (param) => {
+                        return count.value = param - 1;
+                    }
+                });
+                return { countAddTen }
+            }
+
+            // 流程调度，数据中专
+            const app = Vue.createApp({
+                setup(props, context) {
+                    const { count, handleclick } = countReactive();
+                    const { countAddFive } = countAddFiveReactive(count);
+                    let { countAddTen } = countAddTenReactive(count);
+                    setTimeout(() => {
+                        countAddTen.value = 888;
+                    }, 3000)
+                    return {
+                        count, handleclick,
+                        countAddFive,
+                        countAddTen
+                    };
+                },
+                template: `
+                    <div>
+                        <div @click="handleclick">{{count}}</div>
+                        <div>{{countAddFive}}</div>
+                        <div>{{countAddTen}}</div>
+                    </div>
+                `,
+           });
+           
+           const vm = app.mount("#root");
+        </script>
+    </body>
+</html>

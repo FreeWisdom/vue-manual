@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>CompositionAPI中watchEffect使用</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script>
+            const nameReactive = () => {
+                const { reactive, toRefs, watchEffect } = Vue;
+                const nameObj = reactive({
+                    chName: "ZHZ",
+                    enName: "THALES",
+                });
+                const { chName, enName } = toRefs(nameObj);
+                const stopWatchName = watchEffect(() => {
+                    console.log(chName.value, enName.value)
+                });
+                // 3秒后监听失效
+                setTimeout(() => {
+                    stopWatchName();
+                }, 3000);
+                return { chName, enName };
+            };
+
+            // 流程调度，数据中专
+            const app = Vue.createApp({
+                setup(props, context) {
+                    const { chName, enName } = nameReactive();
+                    return {
+                        chName, enName
+                    };
+                },
+                template: `
+                    <div>
+                        <div>姓名：<input v-model="chName" />--<span>{{chName}}</span></div>
+                        <div>姓名：<input v-model="enName" /></div>
+                    </div>
+                `,
+           });
+           
+           const vm = app.mount("#root");
+        </script>
+    </body>
+</html>

@@ -633,3 +633,4 @@ template: `
         app.mount("#root");
     </script>
     ```
+

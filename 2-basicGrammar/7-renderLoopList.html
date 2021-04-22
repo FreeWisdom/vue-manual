@@ -30,12 +30,12 @@
             template: `
                 <div>
                     <div v-for="(item, index) in listArray" :key="index">{{index}}：{{item}}</div>
+                    <div>v-for循环的优先级高于v-if判断的优先级，故不能在父级元素同时写v-for和v-if:</div>
                     <template 
                         v-for="(value, key, index) in listObject" 
                         :key="index" 
                     >
                         <div v-if="key !== 'gender'">
-                            // v-for循环的优先级高于v-if判断的优先级，故不能在父级元素同时写v-for和v-if
                             {{index}}-{{key}}：{{value}}
                         </div>
                     </template>

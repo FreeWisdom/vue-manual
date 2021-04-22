@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>context</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            methods: {
+                handleclick() {
+                    alert("hi");
+                }
+            },
+            template: `
+                    <emit @change="handleclick"></emit>
+                    <attrs name="zhz"></attrs>
+                    <slots>slots</slots>
+                `,
+        });
+
+        app.component("emit", {
+            template: `<div @click="handleclick">emit</div>`,
+            setup(props, context) {
+                const { emit } = context; // this.$emit("xxxx")
+                function handleclick() {
+                    emit("change");
+                }
+                return { handleclick }
+            },
+        });
+
+        app.component("attrs", {
+            template: `<div>attrs:{{name}}</div>`,
+            setup(props, context) {
+                const { attrs } = context; // non-props 属性
+                const name = attrs.name;
+                return { name };
+            }
+        });
+
+        app.component("slots", {
+            setup(props, context) {
+                const { h } = Vue;
+                const { slots } = context; // this.$slots
+                console.log("slots:", slots.default()) // 虚拟 DOM
+                return () => h("div", {name: "zhz"}, slots.default());
+            }
+        })
+
+        const vm = app.mount("#root");
+    </script>
+</body>
+
+</html>

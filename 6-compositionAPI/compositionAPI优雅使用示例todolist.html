@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>compositionAPI优雅使用示例todolist</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script>
+            // list相关的抽离；
+            const listReactive = () => {
+                const { reactive } = Vue;
+                const list = reactive([]);
+                const handlesubmite = (value) => {
+                    console.log(value);
+                    list.push(value);
+                };
+                return { list, handlesubmite }
+            };
+
+            // inputValue相关的抽离；
+            const inputValueReactive = () => {
+                const { ref } = Vue;
+                const inputValue = ref("");
+                const handleInput = (e) => {
+                    inputValue.value = e.target.value;
+                };
+                return { inputValue, handleInput };
+            };
+
+            // 流程调度，数据中专
+            const app = Vue.createApp({
+                setup(props, context) {
+                    const { list, handlesubmite } = listReactive();
+                    const { inputValue, handleInput } = inputValueReactive();
+                    return {
+                        list, handlesubmite,
+                        inputValue, handleInput
+                    };
+                },
+                template: `
+                    <div>
+                        <div>
+                            <input :value="inputValue" @input="handleInput"/>
+                            <button @click="() => handlesubmite(inputValue)">提交</button>
+                        </div>
+                        <ul>
+                            <li v-for="(item, index) in list" :key="index">{{item}}</li>
+                        </ul>
+                    </div>
+                `,
+           });
+           
+           const vm = app.mount("#root");
+        </script>
+    </body>
+</html>

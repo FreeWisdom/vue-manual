@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompositionAPI中ref获取dom新写法</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+<script>
+    // CompositionAPI 的语法下，获取真实的 DOM 元素节点
+    const app = Vue.createApp({
+        setup() {
+            const { ref, onMounted } = Vue;
+            const hello = ref(null);
+            onMounted(() => {
+                console.log(hello.value);
+            })
+            return { hello }
+        },
+        template: `
+      <div>
+        <div ref="hello">hello world</div>
+      </div>
+    `,
+    });
+
+    const vm = app.mount('#root');
+</script>
+
+</html>

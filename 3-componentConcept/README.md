@@ -1,5 +1,6 @@
 # 组件理念
 ## 一、组件的定义及复用性，局部组件和全局组件
+
 ### 1、组件具备复用性，而组件中的数据是独立的；
 ### 2、app.component()定义的**全局组件**
 * 随时随地可以使用，但会一直占用内存，性能较低，使用简单；
@@ -356,7 +357,7 @@ app.component('date-picker', {
 ```
 
 ## 五、父子组件间如何通过事件进行通信
-1. 使用`this.$emit("add", 2)`实现子组件向父组件通信
+1. 子组件使用`this.$emit("add", 2)`，父组件template中使用`@add="handleAdd`，实现子组件向父组件通信
     ```html
     <script>
         const app = Vue.createApp({
@@ -375,8 +376,9 @@ app.component('date-picker', {
                     <counter :count="count" @add="handleAdd"/>
                 </div>
             `
-        });
-
+          
+    });
+    
         app.component("counter", {
             props:["count"],
             // emits: ["add"],
@@ -384,8 +386,8 @@ app.component('date-picker', {
                 add: (count) => {
                     if(count < 0) {
                         return true;
-                    };
-
+                };
+    
                     return false;
                 }
             },
@@ -397,14 +399,15 @@ app.component('date-picker', {
             template: `
                 <div @click="handleClick">{{count}}</div>
             `
-        });
-
+    });
+    
         app.mount("#root");
     </script>
     ```
+    
 2. `emits`的使用
     - 子组件中使用`emits:["add"]`记录组件发出的事件；
-    - 子组件中使用`emits:{add: (value) => {}}`针对组件抛出的事件进行检验；
+    - 子组件中使用`emits:{add: (value) => {}}`针对组件抛出的事件进行检验，若检验不通过返回false会触发警告；
     ```js
     app.component("counter", {
         props:["count"],
@@ -428,7 +431,11 @@ app.component('date-picker', {
         `
     });
     ```
+    
 3. `v-model`在父子通信中的使用（简化代码）
+
+    * 一定要在子组件使用props接收；
+
     ```html
     <script>
         // 使用v-model简化上述代码
@@ -445,7 +452,7 @@ app.component('date-picker', {
                 </div>
             `
         });
-
+    
         app.component("counter", {
             props:["count", "count1"],
             methods: {
@@ -461,12 +468,13 @@ app.component('date-picker', {
                 <div @click="handleClick1">{{count1}}</div>
             `
         });
-
+    
         app.mount("#root");
     </script>
     ```
 ## 六、组件间双向绑定高级内容
 1. `v-model`中修饰符的使用
+
     ```html
     <script>
         // 使用v-model修饰符的使用
@@ -482,10 +490,11 @@ app.component('date-picker', {
                 </div>
             `
         });
-
+    
         app.component("counter", {
             props: {
                 "modelValue": String,
+                // 记住默认写法
                 "modelModifiers": {
                     default: () => ({})
                 }
@@ -493,6 +502,7 @@ app.component('date-picker', {
             methods: {
                 handleClick() {
                     let newValue = this.modelValue + "b";
+                    // modelModifiers 中接收 v-model.uppercas 中的 uppercas； 
                     if(this.modelModifiers.uppercase) {
                         newValue = newValue.toUpperCase()
                     }
@@ -503,7 +513,7 @@ app.component('date-picker', {
                 <div @click="handleClick">{{modelValue}}</div>
             `
         });
-
+    
         app.mount("#root");
     </script>
     ```
@@ -556,7 +566,9 @@ app.component('date-picker', {
     </script>
     ```
 2. 具名插槽的使用方法
-    - `v-slot:xxx`必须做作用在`<template></template>`标签上；
+    - 父组件中的`<template v-slot:xxx>head</template>`，
+      - 必须写在 `<template/>`标签中；
+      - 必须作用在子组件的 template 中对应的 `<slot name="xxx"></slot>`上；
     - `v-slot:xxx`可以简写为`#xxx`;
     ```html
     <script>
@@ -567,9 +579,9 @@ app.component('date-picker', {
                     <template v-slot:header>head</template>
                     <template #footer>footer</template>
                 </layout>
-            `
+        `
         });
-
+    
         app.component("layout", {
             template: `
                 <div>
@@ -577,22 +589,23 @@ app.component('date-picker', {
                     <div>content</div>
                     <slot name="footer"></slot>
                 </div>
-            `
+        `
         });
-
+    
         app.mount("#root");
     </script>
     ```
 
 ## 八、作用域插槽
 1. 解决什么问题：
+    
     - 当子组件渲染的内容由父组件决定的时候，通过作用域插槽实现，让父组件调用子组件item数据；
 2. 执行流程：
     - 父组件调用`list`子组件；
     - `<div>{{item}}</div>`作为模板传递给子组件的slot；
     - 子组件中通过`v-for`将数据`item`传递给父组件；
     - 父组件通过`v-slot="{item}"`接收到item；
-    - 在模板中就可以使用子组件传递过来的`item`值；
+    - 在父组件的模板中就可以使用子组件传递过来的`item`值；
     ```html
     <script>
         // 作用域插槽的使用

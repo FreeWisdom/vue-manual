@@ -23,8 +23,9 @@
                 }
             },
             template: `
+                <div v-once='message'>{{message}}</div>
                 <div v-html='message'></div>
-                <div v-once='message'></div>
+                <div>{{message}}</div>
                 <form action="https://www.baidu.com" @click.prevent="handleClick">
                     <button type="submit">提交</button>
                 </form>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>CompositionAPI中watch使用</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script>
+            // nameReactive相关抽离，reactive的watch方法；
+            const nameReactive = () => {
+                const { reactive, toRefs, watch } = Vue;
+                const nameObj = reactive({
+                    chName: "ZHZ",
+                    enName: "THALES",
+                })
+                const stopWatchName = watch(
+                    [() => nameObj.chName, () => nameObj.enName],
+                    ([curChName, curEnName], [preChName, preEnName]) => {
+                        console.log(curChName, curEnName, preChName, preEnName)
+                    },
+                    { immediate: true }
+                );
+                
+                // 3秒后监听失效；
+                setTimeout(() => {
+                    stopWatchName();
+                }, 3000);
+
+                const { chName, enName } = toRefs(nameObj);
+                
+                return { chName, enName };
+            };
+
+            // ageReactive相关抽离，age的watch方法；
+            const ageReactive = () => {
+                const { ref, toRefs, watch } = Vue;
+                const age = ref(00);
+                watch(age, (cur, pre) => {
+                    console.log(cur, pre)
+                })
+                
+                return { age };
+            };
+
+            // 流程调度，数据中专
+            const app = Vue.createApp({
+                setup(props, context) {
+                    const { chName, enName } = nameReactive();
+                    const { age } = ageReactive();
+                    return {
+                        chName, enName, age
+                    };
+                },
+                template: `
+                    <div>
+                        <div>姓名：<input v-model="chName" />--<span>{{chName}}</span></div>
+                        <div>姓名：<input v-model="enName" /></div>
+                    </div>
+                    <div>
+                        <div>年龄：<input v-model="age" />--<span>{{age}}</span></div>
+                        <div>年龄：<span>{{age}}</span></div>
+                    </div>
+                `,
+           });
+           
+           const vm = app.mount("#root");
+        </script>
+    </body>
+</html>
