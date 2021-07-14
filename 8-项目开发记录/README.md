@@ -105,11 +105,21 @@ import 'normalize.css/normalize.css'
 
 ## 3、css BEM(`block__element--modifier`)命名规则
 
+* BEM的意思就是块（block）、元素（element）、修饰符（modifier）
+
+* ```
+  .块__元素--修饰符{}
+  ```
+
+  - `block` 代表了更高级别的抽象或组件
+  - `block__element` 代表 block 的后代，用于形成一个完整的 block 的整体
+  - `block--modifier`代表 block 的不同状态或不同版本
+
 ```html
 <div class="docker__item--active"></div>
 ```
 
-## 4、如何设置fantasize值为10px
+## 4、如何设置fontasize值为10px
 
 1. 横向纵向均缩放50%；
 2. center top为缩放中心，最终缩放位置为正确位置；
@@ -122,7 +132,7 @@ import 'normalize.css/normalize.css'
 }
 ```
 
-## 5、页面加载抖动问题
+## 5、♨️页面加载抖动问题
 
 1. 在web开发中，经常会遇到这样一个问题，比如**一个宽度百分百，高度自适应的图片，在网速慢的情况下加载过程中会出现抖动的问题**（未加载图片前容器的高度为0，图片加载完成后下面的内容会被挤下去）；
 
@@ -273,9 +283,10 @@ export default {
 }
 ```
 
-## 11、图片未加载完成时避免出现裂图展示的优化
+## 11、♨️图片未加载完成时避免出现裂图展示的优化
 
-* `v-show="item.imgUrl"`:其中 `item.imgUrl` 为图片地址
+* 图片资源加载完成前，图片是裂图，使用 `v-show="图片地址"` 使得加载图片前没有裂图；
+* `v-show="item.imgUrl"`:其中 `item.imgUrl` 为图片地址，没有图片时也没有该元素，所以没有裂图出现；
 
 ```vue
 <ShopInfo :item="item" :hideBorder="true" v-show="item.imgUrl"/>
@@ -346,7 +357,7 @@ const useCurrentListEffect = (currentTab, shopId) => {
 1. **故css中的px为相对单位而非绝对单位；**
 2. **故dpr(device pixel ratio)越大，1px线越粗；**
 
-## 16、(移动端适配①)dpr不同时，移动端如何实现1px边框？
+## 16、♨️(移动端适配①)dpr不同时，移动端如何实现1px边框？
 
 1. css为最佳实现方案
    * 问题1：如何得知设备的dpr值；
@@ -368,11 +379,8 @@ border1px(width=1px, color=#ccc, style=solid, radius=0)
     left 0
     bottom 0
     right 0
-
     z-index 999
-
     content ''
-
     border-width width
     border-color color
     border-style style
@@ -417,7 +425,7 @@ li:last-child
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scaleable=no">
 ```
 
-## 17、(移动端适配②)移动端 -webkit-line-clamp 封装单行/多行文本溢出
+## 17、♨️(移动端适配②)移动端 -webkit-line-clamp 封装单行/多行文本溢出
 
 > 基于 Stylus 的 ellipsis 的封装：
 
@@ -498,9 +506,30 @@ module.exports = {
    
    * 在localhost本地拿到线上地址；
 
-## 19、(移动端适配③)移动端布局方案
+## 19、♨️♨️(移动端适配③)移动端适配方案
 
-### 19.1、**流式布局（百分比布局）**
+### 19.1、百分比方案
+
+* 原理：
+  * 使用 **百分比%** 定义 **宽度**，**高度** 用**`px`**固定，根据可视区域实时尺寸进行调整，尽可能适应各种分辨率，通常使用`max-width`/`min-width`控制尺寸范围过大或者过小。
+* 优
+  * 原理简单，不存在兼容性问题；
+* 缺
+  * 如果屏幕尺度跨度太大，相对设计稿过大或者过小的屏幕不能正常显示，在大屏手机或横竖屏切换场景下可能会导致页面元素被拉伸变形，字体大小无法随屏幕大小发生变化；
+  * 设置盒模型的不同属性时，其百分比设置的参考元素不唯一，容易使布局问题变得复杂
+
+### 19.2、rem方案
+
+* 原理：
+  * **rem**是相对长度单位，rem方案中的样式设计为相对于**根元素**`font-size`计算值的倍数。
+  * 根据 **屏幕宽度** 设置`html`标签的`font-size`，在布局时使用 **rem** 单位布局，达到自适应的目的，是 **弹性布局** 的一种实现方式。
+* 过程：
+  * **实现过程：** 
+    *  首先获取文档根元素和设备`dpr`，设置 **rem**；
+    * 在`html`文档加载和解析完成后调整`body`字体大小；
+    *  在页面**缩放 / 回退 / 前进**的时候， 获取元素的内部宽度 (不包括垂直滚动条，边框和外边距)，重新调整 **rem** 大小。
+
+### 19.1、**流式布局（百分比布局、rem布局）**
 
 * 实现方式：
   * 宽度百分百 + 高度固定；
@@ -521,8 +550,8 @@ module.exports = {
 > >
 > > ```css
 > > html {
-> >   /* fontsize: 100px */
-> >   fontsize: 设计稿参照系vw
+> >       /* fontsize: 100px */
+> >       fontsize: 设计稿参照系vw
 > > }
 > > /*页面其他地方设置，依赖 html.fontsize 为 100px 的 如：0.44rem 值*/
 > > ```
@@ -531,7 +560,7 @@ module.exports = {
 >
 > * 若设计稿参照系为Iphone 6/7/8--375*667
 >
-> >  按照上面的提到的方法，则html中`fontsize: 26.6666667vw`
+> >  按照上面的提到的方法，则html中`fontsize: 26.6666667vw` （100px / (375 * 1%) = 26.6666667）
 >
 > >  若页面中有元素高度为 0.44rem 换算成 px 如下推导：
 >
@@ -597,6 +626,8 @@ module.exports = {
 #### 19.2.2、方案二：js获取屏幕宽度 + rem
 
 > public/index.html添加script
+>
+> * ⚠️ 并不是完全的等比缩放，
 
 ```js
 var width = document.documentElement.clientWidth || document.body.clientWidth;

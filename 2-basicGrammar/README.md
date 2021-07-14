@@ -410,7 +410,7 @@ template: `
                 {{message}}
                 <input v-model.lazy="message"/>
             </div>
-            div>
+            <div>
                 {{numberMessage}}
                 {{typeof numberMessage}}
                 <input v-model.number="numberMessage" type="number"/>
@@ -473,7 +473,7 @@ template: `
                 </div>
             `
         });
-
+    
         app.mount("#root");
     </script>
     ```

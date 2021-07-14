@@ -34,7 +34,7 @@ const app = Vue.createApp({
 
 const vm = app.mount("#root");
 ```
-## 6-2 ref, reactive, readonly, toRefs 响应式引用的用法
+## 6-2 ref, reactive, readonly, toRefs 响应式引用的用法（对标usestate）
 1. 响应式引用的原理：**通过proxy对数据进行封装，当数据变化时，触发模板等内容的更新；**
     * **为什么要用对象包装？这是因为：**
       *  **JavaScript 中，像 Number 或 String 这样的基本类型是按值传递的，而不是按引用传递的，有一个包装对象围绕任何值，使我们能够安全地在整个应用程序中传递它，而不用担心在传递过程中某个地方会丢失反应。**
@@ -77,9 +77,9 @@ const vm = app.mount("#root");
   const vm = app.mount("#root");
 </script>
 ```
-## 6-3 toRef 
+## 6-3 toRef （对标usestate）
 
-* 即使源属性当前不存在，toRef 也会返回一个可用的 ref(引用)。
+* 当初始值不存在时使用，即使源属性当前不存在，toRef 也会返回一个可用的 ref(引用)。
 
 ```HTML
 <script>
